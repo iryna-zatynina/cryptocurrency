@@ -1,13 +1,14 @@
 .Header {
   position: fixed;
   width: 100%;
+  z-index: 10;
+  background-color: white;
   .nav {
     font-size: 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    margin: 20px 0;
     .dropdown-toggle {
       background-color: white;
       color: black;
