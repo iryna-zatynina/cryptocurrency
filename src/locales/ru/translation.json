@@ -1,4 +1,9 @@
 {
   "Log In": "Войти",
-  "Sign Up": "Зарегестрироваться"
+  "Sign Up": "Зарегестрироваться",
+  "Already have an account?": "Уже есть аккаунт?",
+  "Login": "Войти",
+  "Enter address": "Введите адрес",
+  "Password": "Пароль",
+  "Continue": "Продолжить"
 }
