@@ -5,5 +5,14 @@
   "Login": "Login",
   "Enter address": "Enter address",
   "Password": "Password",
-  "Continue": "Continue"
+  "Your name": "Your name",
+  "Phone number (optional)": "Phone number (optional)",
+  "Continue": "Continue",
+  "Don't forget about @": "Don't forget about @",
+  "Too short password": "Too short password",
+  "Enter only latin letters": "Enter only latin letters",
+  "Too short name": "Too short name",
+  "Too short phone number": "Too short phone number",
+  "Done!": "Done!",
+  "This email already exists...": "This email already exists..."
 }

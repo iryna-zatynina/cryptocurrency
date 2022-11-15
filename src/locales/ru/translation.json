@@ -5,5 +5,14 @@
   "Login": "Войти",
   "Enter address": "Введите адрес",
   "Password": "Пароль",
-  "Continue": "Продолжить"
+  "Your name": "Ваше имя",
+  "Phone number (optional)": "Номер телефона (опционально)",
+  "Continue": "Продолжить",
+  "Don't forget about @": "Не забудь про @",
+  "Too short password": "Слишком короткий пароль",
+  "Enter only latin letters": "Используй только латинские буквы",
+  "Too short name": "Слишком короткое имя",
+  "Too short phone number": "Слишком короткий номер телефона",
+  "Done!": "Готово!",
+  "This email already exists...": "Такой имейл уже существует..."
 }
