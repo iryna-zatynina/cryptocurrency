@@ -36,10 +36,11 @@ const Registration = ({show, handleClose}: RegistrationProps) => {
     const [buttonStyle, setButtonStyle] = useState<Object>({background: "lightgray"});
 
     let valid: boolean = true;
+    const NAME_REGEX = /[a-zA-Z]+$/g;
+    const EMAIL_REGEX = /@/g;
 
     const validation = () => {
-        const emailRegex = /@/g;
-        if (!emailRegex.test(emailValue) && emailValue.length !== 0) {
+        if (!EMAIL_REGEX.test(emailValue) && emailValue.length !== 0) {
             setEmailValue("")
             setEmailStyle({background: '#fce6e6'})
             setEmailPlaceholder("Don't forget about @")
@@ -61,8 +62,7 @@ const Registration = ({show, handleClose}: RegistrationProps) => {
             valid = false;
         }
 
-        const nameRegex = /[a-zA-Z]+$/g;
-        if (!nameRegex.test(nameValue) && nameValue.length !== 0) {
+        if (!NAME_REGEX.test(nameValue) && nameValue.length !== 0) {
             setNameValue("")
             setNameStyle({background: '#fce6e6'})
             setNamePlaceholder("Enter only latin letters")
@@ -87,7 +87,6 @@ const Registration = ({show, handleClose}: RegistrationProps) => {
 
     const register = () => {
         validation();
-        console.log(valid)
         if (valid) {
             setShowLoader(true)
             axios.post(`https://user-simple.herokuapp.com/auth/registration`, {
@@ -114,7 +113,6 @@ const Registration = ({show, handleClose}: RegistrationProps) => {
                     }
                 })
         }
-
     }
 
     const onEmailChange = (e) => {
