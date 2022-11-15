@@ -35,7 +35,7 @@ const Registration = ({show, handleClose}: RegistrationProps) => {
     const [buttonValue, setButtonValue] = useState<string>("Continue");
     const [buttonStyle, setButtonStyle] = useState<Object>({background: "lightgray"});
 
-    let valid: boolean = false;
+    let valid: boolean = true;
 
     const validation = () => {
         const emailRegex = /@/g;
@@ -43,22 +43,22 @@ const Registration = ({show, handleClose}: RegistrationProps) => {
             setEmailValue("")
             setEmailStyle({background: '#fce6e6'})
             setEmailPlaceholder("Don't forget about @")
+            valid = false;
         } else if (emailValue.length === 0) {
             setEmailValue("")
             setEmailStyle({background: '#fce6e6'})
-        } else {
-            valid = true;
+            valid = false;
         }
 
         if (passwordValue.length < 3 && passwordValue.length !== 0) {
             setPasswordStyle({background: '#fce6e6'})
             setPasswordValue("")
             setPasswordPlaceholder("Too short password")
+            valid = false;
         } else if (passwordValue.length === 0) {
             setPasswordValue("")
             setPasswordStyle({background: '#fce6e6'})
-        } else {
-            valid = true;
+            valid = false;
         }
 
         const nameRegex = /[a-zA-Z]+$/g;
@@ -66,25 +66,28 @@ const Registration = ({show, handleClose}: RegistrationProps) => {
             setNameValue("")
             setNameStyle({background: '#fce6e6'})
             setNamePlaceholder("Enter only latin letters")
+            valid = false;
         } else if (nameValue.length < 3 && nameValue.length !== 0) {
             setNameStyle({background: '#fce6e6'})
             setNameValue("")
             setNamePlaceholder("Too short name")
+            valid = false;
         } else if (nameValue.length === 0) {
             setNameStyle({background: '#fce6e6'})
             setNameValue("")
-        } else {
-            valid = true;
+            valid = false;
         }
         if (telValue.length < 10 && telValue.length !== 0) {
             setTelStyle({background: '#fce6e6'})
             setTelValue("")
             setTelPlaceholder("Too short phone number")
+            valid = false;
         }
     }
 
     const register = () => {
         validation();
+        console.log(valid)
         if (valid) {
             setShowLoader(true)
             axios.post(`https://user-simple.herokuapp.com/auth/registration`, {
@@ -102,6 +105,9 @@ const Registration = ({show, handleClose}: RegistrationProps) => {
                         setPasswordValue("");
                         setNameValue("")
                         setTelValue("")
+                        setTimeout(() => {
+                            handleClose();
+                        }, 1000)
                     } else if (response.data.status === "email is used") {
                         setButtonValue("This email already exists...");
                         setButtonStyle({background: "red"})
@@ -114,6 +120,8 @@ const Registration = ({show, handleClose}: RegistrationProps) => {
     const onEmailChange = (e) => {
         setEmailValue(e.target.value);
         setEmailStyle({background: 'white'});
+        setButtonValue("Continue");
+        setButtonStyle({background: "lightgrey"})
     }
     const onPasswordChange = (e) => {
         setPasswordValue(e.target.value);
