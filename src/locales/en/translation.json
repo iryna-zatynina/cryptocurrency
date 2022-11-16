@@ -1,4 +1,18 @@
 {
   "Log In": "Log In",
-  "Sign Up": "Sign Up"
+  "Sign Up": "Sign Up",
+  "Already have an account?": "Already have an account?",
+  "Login": "Login",
+  "Enter address": "Enter address",
+  "Password": "Password",
+  "Your name": "Your name",
+  "Phone number (optional)": "Phone number (optional)",
+  "Continue": "Continue",
+  "Don't forget about @": "Don't forget about @",
+  "Too short password": "Too short password",
+  "Enter only latin letters": "Enter only latin letters",
+  "Too short name": "Too short name",
+  "Too short phone number": "Too short phone number",
+  "Done!": "Done!",
+  "This email already exists...": "This email already exists..."
 }

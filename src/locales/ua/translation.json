@@ -1,4 +1,18 @@
 {
   "Log In": "Ввійти",
-  "Sign Up": "Зареєструватися"
+  "Sign Up": "Зареєструватися",
+  "Already have an account?": "Вже є аккаунт?",
+  "Login": "Ввійти",
+  "Enter address": "Введіть адресу",
+  "Password": "Пароль",
+  "Your name": "Ваше імʼя",
+  "Phone number (optional)": "Номер телефону (опціонально)",
+  "Continue": "Продовжити",
+  "Don't forget about @": "Не забудь про @",
+  "Too short password": "Занадто короткий пароль",
+  "Enter only latin letters": "Використовуй лише латинські літери",
+  "Too short name": "Занадто коротке імʼя",
+  "Too short phone number": "Занадто короткий номер телефону",
+  "Done!": "Готово!",
+  "This email already exists...": "Такий імейл вже існує..."
 }
