@@ -4,14 +4,18 @@ import {Dropdown, DropdownButton, Nav, Navbar} from "react-bootstrap";
 import {TbWorld} from "react-icons/tb";
 import {useTranslation} from "react-i18next";
 import Registration from "../Registration/Registration";
+import Login from "../Login/Login";
 
 const Header:React.FC = () => {
 
     const {t, i18n} = useTranslation();
-    const [show, setShow] = useState<boolean>(false);
+    const [showRegistration, setShowRegistration] = useState<boolean>(false);
+    const [showLogin, setShowLogin] = useState<boolean>(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleCloseRegistration = () => setShowRegistration(false);
+    const handleShowRegistration = () => setShowRegistration(true);
+    const handleCloseLogin = () => setShowLogin(false);
+    const handleShowLogin = () => setShowLogin(true);
 
     return (
         <React.Fragment>
@@ -27,14 +31,15 @@ const Header:React.FC = () => {
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="logins">
-                                <Nav.Link href="#" className="log-in">{t("Log In")}</Nav.Link>
-                                <Nav.Link href="#" className="sign-up" onClick={handleShow}>{t("Sign Up")}</Nav.Link>
+                                <Nav.Link href="#" className="log-in" onClick={handleShowLogin}>{t("Log In")}</Nav.Link>
+                                <Nav.Link href="#" className="sign-up" onClick={handleShowRegistration}>{t("Sign Up")}</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Navbar>
                 </div>
             </div>
-            {show && <Registration show={show} handleClose={handleClose} />}
+            {showLogin && <Login showLogin={showLogin} handleCloseLogin={handleCloseLogin} />}
+            {showRegistration && <Registration showRegistration={showRegistration} handleCloseRegistration={handleCloseRegistration} />}
         </React.Fragment>
     );
 };

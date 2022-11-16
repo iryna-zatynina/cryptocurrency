@@ -14,5 +14,7 @@
   "Too short name": "Too short name",
   "Too short phone number": "Too short phone number",
   "Done!": "Done!",
-  "This email already exists...": "This email already exists..."
+  "This email already exists...": "This email already exists...",
+  "This email is not registered": "This email is not registered",
+  "An incorrect password": "An incorrect password"
 }

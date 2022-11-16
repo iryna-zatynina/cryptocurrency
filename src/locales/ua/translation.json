@@ -14,5 +14,7 @@
   "Too short name": "Занадто коротке імʼя",
   "Too short phone number": "Занадто короткий номер телефону",
   "Done!": "Готово!",
-  "This email already exists...": "Такий імейл вже існує..."
+  "This email already exists...": "Такий імейл вже існує...",
+  "This email is not registered": "Такий імейл не зареєстрований",
+  "An incorrect password": "Невірний пароль"
 }
