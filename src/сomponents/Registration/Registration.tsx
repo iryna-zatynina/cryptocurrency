@@ -5,6 +5,7 @@ import "./Registration.scss"
 import {useTranslation} from "react-i18next";
 import axios from "axios";
 import Loader from "../Loader/Loader";
+import {NAME_REGEX, EMAIL_REGEX} from "../../shared/global.variables"
 
 interface RegistrationProps {
     showRegistration: boolean,
@@ -36,8 +37,6 @@ const Registration = ({showRegistration, handleCloseRegistration}: RegistrationP
     const [buttonStyle, setButtonStyle] = useState<Object>({background: "lightgray"});
 
     let valid: boolean = true;
-    const NAME_REGEX = /[a-zA-Z]+$/g;
-    const EMAIL_REGEX = /@/g;
 
     const validation = () => {
         if (!EMAIL_REGEX.test(emailValue) && emailValue.length !== 0) {

@@ -6,6 +6,7 @@ import {useTranslation} from "react-i18next";
 import axios from "axios";
 import Loader from "../Loader/Loader";
 import {useNavigate} from "react-router-dom";
+import {EMAIL_REGEX} from "../../shared/global.variables"
 
 interface LoginProps {
     showLogin: boolean,
@@ -32,7 +33,6 @@ const Login = ({showLogin, handleCloseLogin}: LoginProps) => {
     const [buttonStyle, setButtonStyle] = useState<Object>({background: "lightgray"});
 
     let valid: boolean = true;
-    const EMAIL_REGEX = /@/g;
 
     const validation = () => {
         if (!EMAIL_REGEX.test(emailValue) && emailValue.length !== 0) {
