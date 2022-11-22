@@ -4,7 +4,7 @@ import Landing from "../pages/Landing/Landing";
 import CryptoList from "../pages/CryptoList/CryptoList";
 import OtherCrypto from "../pages/OtherCrypto/OtherCrypto";
 import Profile from "../pages/Profile/Profile";
-import {useAuth} from "./auth.hook";
+import Page404 from "../pages/Page404/Page404";
 
 const useRoutes = (isLogin: boolean) => {
     if (isLogin) {
@@ -13,12 +13,14 @@ const useRoutes = (isLogin: boolean) => {
                 <Route path="/" element={<CryptoList /> } />
                 <Route path="/id" element={<OtherCrypto /> } />
                 <Route path="/profile" element={<Profile /> } />
+                <Route path="*" element={<Page404 /> } />
             </Routes>
         );
     } else {
         return (
             <Routes>
                 <Route path="/" element={<Landing /> } />
+                <Route path="*" element={<Page404 /> } />
             </Routes>
         );
     }
