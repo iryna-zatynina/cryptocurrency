@@ -1,0 +1,31 @@
+.Error404 {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    .error-number {
+        font-size: 100px;
+    }
+    p {
+        font-weight: bold;
+    }
+    .btn {
+        border: none;
+        border-radius: 40px;
+        background-color: darkgoldenrod;
+        height: 60px;
+        width: 200px;
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        &:hover {
+            transform: scale(1.2);
+        }
+    }
+}
