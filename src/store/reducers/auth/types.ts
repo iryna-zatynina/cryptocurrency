@@ -8,11 +8,19 @@ export interface AuthState {
 }
 
 export enum AuthEnum {
-    ADD_AUTH_DATA = "ADD_AUTH_DATA"
+    ADD_AUTH_DATA = "ADD_AUTH_DATA",
+    DELETE_AUTH_DATA = "DELETE_AUTH_DATA"
 }
 
 export interface AddAuthDataAction {
     type: AuthEnum.ADD_AUTH_DATA,
+    payload: {
+        token: string, isReady: boolean, login: (JWTtoken: string) => void, logout: () => void
+    }
+}
+
+export interface DeleteAuthDataAction {
+    type: AuthEnum.DELETE_AUTH_DATA,
     payload: {
         token: string, isReady: boolean, login: (JWTtoken: string) => void, logout: () => void
     }

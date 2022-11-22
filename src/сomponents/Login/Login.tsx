@@ -7,6 +7,8 @@ import axios from "axios";
 import Loader from "../Loader/Loader";
 import {useNavigate} from "react-router-dom";
 import {EMAIL_REGEX} from "../../shared/global.variables"
+import {useSelector} from "react-redux";
+import {StoreTypes} from "../../store/reducers/reducers";
 
 interface LoginProps {
     showLogin: boolean,
@@ -16,7 +18,8 @@ interface LoginProps {
 const Login = ({showLogin, handleCloseLogin}: LoginProps) => {
 
     const {t} = useTranslation();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const {login} = useSelector((state: StoreTypes) => state.auth.auth);
 
     const [showLoader, setShowLoader] = useState<boolean>(false);
 
@@ -58,7 +61,7 @@ const Login = ({showLogin, handleCloseLogin}: LoginProps) => {
         }
     }
 
-    const login = () => {
+    const loginPros = () => {
         validation();
         if (valid) {
             setShowLoader(true)
@@ -81,7 +84,8 @@ const Login = ({showLogin, handleCloseLogin}: LoginProps) => {
                         setPasswordValue("");
                         setTimeout(() => {
                             handleCloseLogin();
-                            navigate("/cryptos")
+                            login(response.data.token);
+                            navigate("/");
                         }, 1000)
                     }
                 })
@@ -115,7 +119,7 @@ const Login = ({showLogin, handleCloseLogin}: LoginProps) => {
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button className="continue-btn" onClick={login} style={buttonStyle}>
+                    <Button className="continue-btn" onClick={loginPros} style={buttonStyle}>
                         {t(buttonValue)}
                     </Button>
                 </Modal.Footer>
