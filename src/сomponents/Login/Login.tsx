@@ -1,37 +1,36 @@
 import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import "./Registration.scss"
+import "./Login.scss";
 import {useTranslation} from "react-i18next";
 import axios from "axios";
 import Loader from "../Loader/Loader";
-import {NAME_REGEX, EMAIL_REGEX} from "../../shared/global.variables"
+import {useNavigate} from "react-router-dom";
+import {EMAIL_REGEX} from "../../shared/global.variables"
+import {useSelector} from "react-redux";
+import {StoreTypes} from "../../store/reducers/reducers";
 
-interface RegistrationProps {
-    showRegistration: boolean,
-    handleCloseRegistration: () => void
+interface LoginProps {
+    showLogin: boolean,
+    handleCloseLogin: () => void
 }
 
-const Registration = ({showRegistration, handleCloseRegistration}: RegistrationProps) => {
+const Login = ({showLogin, handleCloseLogin}: LoginProps) => {
 
     const {t} = useTranslation();
+    const navigate = useNavigate();
+    const {login} = useSelector((state: StoreTypes) => state.auth.auth);
 
     const [showLoader, setShowLoader] = useState<boolean>(false);
 
     const [emailValue, setEmailValue] = useState<string>("");
     const [passwordValue, setPasswordValue] = useState<string>("");
-    const [nameValue, setNameValue] = useState<string>("");
-    const [telValue, setTelValue] = useState<string>("");
 
     const [emailPlaceholder, setEmailPlaceholder] = useState<string>("Enter address");
     const [passwordPlaceholder, setPasswordPlaceholder] = useState<string>("Password");
-    const [namePlaceholder, setNamePlaceholder] = useState<string>("Your name");
-    const [telPlaceholder, setTelPlaceholder] = useState<string>("Phone number (optional)");
 
     const [emailStyle, setEmailStyle] = useState<Object>({background: 'white'});
     const [passwordStyle, setPasswordStyle] = useState<Object>({background: 'white'});
-    const [nameStyle, setNameStyle] = useState<Object>({background: 'white'});
-    const [telStyle, setTelStyle] = useState<Object>({background: 'white'});
 
     const [buttonValue, setButtonValue] = useState<string>("Continue");
     const [buttonStyle, setButtonStyle] = useState<Object>({background: "lightgray"});
@@ -60,59 +59,39 @@ const Registration = ({showRegistration, handleCloseRegistration}: RegistrationP
             setPasswordStyle({background: '#fce6e6'})
             valid = false;
         }
-
-        if (!NAME_REGEX.test(nameValue) && nameValue.length !== 0) {
-            setNameValue("")
-            setNameStyle({background: '#fce6e6'})
-            setNamePlaceholder("Enter only latin letters")
-            valid = false;
-        } else if (nameValue.length < 3 && nameValue.length !== 0) {
-            setNameStyle({background: '#fce6e6'})
-            setNameValue("")
-            setNamePlaceholder("Too short name")
-            valid = false;
-        } else if (nameValue.length === 0) {
-            setNameStyle({background: '#fce6e6'})
-            setNameValue("")
-            valid = false;
-        }
-        if (telValue.length < 10 && telValue.length !== 0) {
-            setTelStyle({background: '#fce6e6'})
-            setTelValue("")
-            setTelPlaceholder("Too short phone number")
-            valid = false;
-        }
     }
 
-    const register = () => {
+    const loginPros = () => {
         validation();
         if (valid) {
             setShowLoader(true)
-            axios.post(`https://user-simple.herokuapp.com/auth/registration`, {
+            axios.post(`https://user-simple.herokuapp.com/auth/login`, {
                 email: emailValue,
-                password: passwordValue,
-                fullName: nameValue,
-                phone: telValue === "" ? null : telValue
+                password: passwordValue
             })
                 .then((response) => {
                     setShowLoader(false);
-                    if (response.data.status === "user created") {
+                    if (response.data.status === "user is not defined") {
+                        setButtonValue("This email is not registered");
+                        setButtonStyle({background: "red"})
+                    } else if (response.data.status === "an incorrect password") {
+                        setButtonValue("An incorrect password");
+                        setButtonStyle({background: "red"})
+                    } else {
                         setButtonValue("Done!");
                         setButtonStyle({background: "green"})
                         setEmailValue("");
                         setPasswordValue("");
-                        setNameValue("")
-                        setTelValue("")
                         setTimeout(() => {
-                            handleCloseRegistration();
+                            handleCloseLogin();
+                            login(response.data.token);
+                            navigate("/");
                         }, 1000)
-                    } else if (response.data.status === "email is used") {
-                        setButtonValue("This email already exists...");
-                        setButtonStyle({background: "red"})
                     }
                 })
         }
     }
+
 
     const onEmailChange = (e) => {
         setEmailValue(e.target.value);
@@ -123,36 +102,24 @@ const Registration = ({showRegistration, handleCloseRegistration}: RegistrationP
     const onPasswordChange = (e) => {
         setPasswordValue(e.target.value);
         setPasswordStyle({background: 'white'});
-    }
-    const onNameChange = (e) => {
-        setNameValue(e.target.value);
-        setNameStyle({background: 'white'});
-    }
-    const onTelChange = (e) => {
-        setTelValue(e.target.value);
-    }
-    const onTelFocus = () => {
-        setTelStyle({background: 'white'})
-        setTelPlaceholder("Phone number (optional)")
+        setButtonValue("Continue");
+        setButtonStyle({background: "lightgrey"})
     }
 
     return (
         <>
-            <Modal className="Registration" show={showRegistration} onHide={handleCloseRegistration} centered>
+            <Modal className="Login " show={showLogin} onHide={handleCloseLogin} centered>
                 <Modal.Header closeButton>
                 </Modal.Header>
                 <Modal.Body>
-                    <Modal.Title>{t("Sign Up")}</Modal.Title>
-                    <p>{t("Already have an account?")} <span onClick={handleCloseRegistration}>{t("Login")}</span></p>
+                    <Modal.Title>{t("Log In")}</Modal.Title>
                     <form>
                         <input type="email" placeholder={t(emailPlaceholder)} value={emailValue} onChange={onEmailChange} style={emailStyle}/>
                         <input type="password" placeholder={t(passwordPlaceholder)} value={passwordValue} onChange={onPasswordChange} style={passwordStyle}/>
-                        <input type="text" placeholder={t(namePlaceholder)} value={nameValue} onChange={onNameChange} style={nameStyle}/>
-                        <input type="tel" placeholder={t(telPlaceholder)} value={telValue} onChange={onTelChange} onFocus={onTelFocus} style={telStyle}/>
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button className="continue-btn" onClick={register} style={buttonStyle}>
+                    <Button className="continue-btn" onClick={loginPros} style={buttonStyle}>
                         {t(buttonValue)}
                     </Button>
                 </Modal.Footer>
@@ -162,4 +129,4 @@ const Registration = ({showRegistration, handleCloseRegistration}: RegistrationP
     );
 };
 
-export default Registration;
+export default Login;

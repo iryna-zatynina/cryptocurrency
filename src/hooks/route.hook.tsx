@@ -4,16 +4,25 @@ import Landing from "../pages/Landing/Landing";
 import CryptoList from "../pages/CryptoList/CryptoList";
 import OtherCrypto from "../pages/OtherCrypto/OtherCrypto";
 import Profile from "../pages/Profile/Profile";
+import {useAuth} from "./auth.hook";
 
-const useRoutes = () => {
-    return (
-        <Routes>
-            <Route path="/" element={<Landing /> } />
-            <Route path="/cryptos" element={<CryptoList /> } />
-            <Route path="/id" element={<OtherCrypto /> } />
-            <Route path="/profile" element={<Profile /> } />
-        </Routes>
-    );
+const useRoutes = (isLogin: boolean) => {
+    if (isLogin) {
+        return (
+            <Routes>
+                <Route path="/" element={<CryptoList /> } />
+                <Route path="/id" element={<OtherCrypto /> } />
+                <Route path="/profile" element={<Profile /> } />
+            </Routes>
+        );
+    } else {
+        return (
+            <Routes>
+                <Route path="/" element={<Landing /> } />
+            </Routes>
+        );
+    }
+
 };
 
 
