@@ -5,6 +5,7 @@ import CryptoList from "../pages/CryptoList/CryptoList";
 import OtherCrypto from "../pages/OtherCrypto/OtherCrypto";
 import Profile from "../pages/Profile/Profile";
 import Page404 from "../pages/Page404/Page404";
+import MyAccount from "../pages/MyAccount/MyAccount";
 
 const useRoutes = (isLogin: boolean) => {
     if (isLogin) {
@@ -12,7 +13,7 @@ const useRoutes = (isLogin: boolean) => {
             <Routes>
                 <Route path="/" element={<CryptoList /> } />
                 <Route path="/id" element={<OtherCrypto /> } />
-                <Route path="/profile" element={<Profile /> } />
+                <Route path="/profile" element={<MyAccount /> } />
                 <Route path="*" element={<Page404 /> } />
             </Routes>
         );

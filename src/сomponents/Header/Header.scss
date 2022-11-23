@@ -31,7 +31,7 @@
       justify-content: flex-end;
       align-items: flex-end;
     }
-    .logins {
+    .nav-block {
       display: flex;
       gap: 10px;
       a {
@@ -49,10 +49,10 @@
           color: white;
         }
       }
-      .log-in {
+      .white-btn {
         border: 1px solid black;
       }
-      .sign-up {
+      .yellow-btn {
         background-color: darkgoldenrod;
         border: none;
       }
