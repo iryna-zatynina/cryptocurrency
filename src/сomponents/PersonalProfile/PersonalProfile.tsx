@@ -6,6 +6,13 @@ import {useSelector} from "react-redux";
 import {StoreTypes} from "../../store/reducers/reducers";
 import Loader from "../Loader/Loader";
 
+interface IData {
+    name: string,
+    email: string,
+    tel: string,
+    regDate: string
+}
+
 const PersonalProfile = () => {
 
     useEffect(() => {
@@ -16,10 +23,12 @@ const PersonalProfile = () => {
             }
         })
             .then((response) => {
-                setName(response.data.fullName);
-                setEmail(response.data.email);
-                setRegDate(formatDate(response.data.dc));
-                response.data.phone ? setTel(response.data.phone) : setTel("not specified");
+                setData({
+                    name: response.data.fullName,
+                    email: response.data.email,
+                    tel: response.data.phone ? response.data.phone : "not specified",
+                    regDate: formatDate(response.data.dc)
+                })
             })
             .catch((error) => {
                 console.log(error)
@@ -31,34 +40,32 @@ const PersonalProfile = () => {
 
     const {t} = useTranslation();
     const [loader, setLoader] = useState<boolean>(false);
-    const [name, setName] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
-    const [tel, setTel] = useState<string>("");
-    const [regDate, setRegDate] = useState<string | number>("");
+    const [data, setData] = useState<IData>({
+        name: '',
+        email: '',
+        tel: '',
+        regDate: ''
+    });
     const {token} = useSelector((state: StoreTypes) => state.auth.auth)
 
     const formatDate = (data) => {
         const date = new Date(data);
-        let day: string | number = date.getDate();
-        if (day < 10) day = '0' + day;
-        let month: string | number = date.getMonth();
-        if (month < 10) month = '0' + month;
-        let year = date.getFullYear();
-        return day + '.' + month + '.' + year;
+        return date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear();
     }
+
     return (
         <div className="PersonalProfile">
             <div className="container">
                 <div className="wrapper">
                     <h1>{t("My account")}</h1>
                     <p>{t("Name")}:</p>
-                    <span>{name}</span>
+                    <span>{data.name}</span>
                     <p>{t("Email")}:</p>
-                    <span>{email}</span>
+                    <span>{data.email}</span>
                     <p>{t("Phone number")}:</p>
-                    <span>{tel}</span>
+                    <span>{data.tel}</span>
                     <p>{t("Registration date")}:</p>
-                    <span>{regDate}</span>
+                    <span>{data.regDate}</span>
                 </div>
             </div>
             {loader && <Loader />}
