@@ -25,4 +25,5 @@ const useRoutes = (isLogin: boolean) => {
         );
     }
 };
+
 export default useRoutes;
