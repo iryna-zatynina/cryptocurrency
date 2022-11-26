@@ -14,6 +14,7 @@ interface IData {
 }
 
 const PersonalProfile = () => {
+    const {token} = useSelector((state: StoreTypes) => state.auth.auth)
 
     useEffect(() => {
         setLoader(true);
@@ -22,12 +23,12 @@ const PersonalProfile = () => {
                 'authorization': token
             }
         })
-            .then((response) => {
+            .then(({data}) => {
                 setData({
-                    name: response.data.fullName,
-                    email: response.data.email,
-                    tel: response.data.phone ? response.data.phone : "not specified",
-                    regDate: formatDate(response.data.dc)
+                    name: data.fullName,
+                    email: data.email,
+                    tel: data.phone ? data.phone : "not specified",
+                    regDate: formatDate(data.dc)
                 })
             })
             .catch((error) => {
@@ -36,7 +37,7 @@ const PersonalProfile = () => {
             .finally(() => {
                 setLoader(false);
             })
-    }, [])
+    }, [token])
 
     const {t} = useTranslation();
     const [loader, setLoader] = useState<boolean>(false);
@@ -46,11 +47,9 @@ const PersonalProfile = () => {
         tel: '',
         regDate: ''
     });
-    const {token} = useSelector((state: StoreTypes) => state.auth.auth)
 
-    const formatDate = (data) => {
-        const date = new Date(data);
-        return date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear();
+    const formatDate = (dc) => {
+        return new Date(dc).toLocaleDateString()
     }
 
     return (
