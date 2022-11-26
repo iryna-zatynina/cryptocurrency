@@ -7,8 +7,6 @@ import {useAuth} from "../../hooks/auth.hook";
 import {useDispatch} from "react-redux";
 
 const App:React.FC = () => {
-
-
     const dispatch = useDispatch()
     const {token, isReady, login, logout} = useAuth();
     const isLogin = !!token;
@@ -18,7 +16,7 @@ const App:React.FC = () => {
     return (
         <div className="App">
             <BrowserRouter>
-                {routes}
+                {isReady && routes}
             </BrowserRouter>
         </div>
     );

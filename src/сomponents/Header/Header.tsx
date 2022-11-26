@@ -5,17 +5,35 @@ import {TbWorld} from "react-icons/tb";
 import {useTranslation} from "react-i18next";
 import Registration from "../Registration/Registration";
 import Login from "../Login/Login";
+import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {StoreTypes} from "../../store/reducers/reducers";
 
-const Header:React.FC = () => {
+interface HeaderProps {
+    showLandingButtons: boolean,
+    showAccountButtons: boolean
+}
+
+const Header = ({showLandingButtons, showAccountButtons}: HeaderProps) => {
 
     const {t, i18n} = useTranslation();
     const [showRegistration, setShowRegistration] = useState<boolean>(false);
     const [showLogin, setShowLogin] = useState<boolean>(false);
+    const navigate = useNavigate();
+    const {logout} = useSelector((state: StoreTypes) => state.auth.auth)
 
     const handleCloseRegistration = () => setShowRegistration(false);
     const handleShowRegistration = () => setShowRegistration(true);
     const handleCloseLogin = () => setShowLogin(false);
     const handleShowLogin = () => setShowLogin(true);
+
+    const toMyAccount = () => {
+        navigate("/profile");
+    }
+    const logOut = () => {
+        logout();
+        navigate("/");
+    }
 
     return (
         <React.Fragment>
@@ -30,10 +48,14 @@ const Header:React.FC = () => {
                         <div className="logo">crypto</div>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
-                            <Nav className="logins">
-                                <Nav.Link href="#" className="log-in" onClick={handleShowLogin}>{t("Log In")}</Nav.Link>
-                                <Nav.Link href="#" className="sign-up" onClick={handleShowRegistration}>{t("Sign Up")}</Nav.Link>
-                            </Nav>
+                            {showLandingButtons && <Nav className="nav-block">
+                                <Nav.Link href="#" className="white-btn" onClick={handleShowLogin}>{t("Log In")}</Nav.Link>
+                                <Nav.Link href="#" className="yellow-btn" onClick={handleShowRegistration}>{t("Sign Up")}</Nav.Link>
+                            </Nav>}
+                            {showAccountButtons && <Nav className="nav-block ">
+                                <Nav.Link href="#" className="white-btn" onClick={logOut}>{t("Log Out")}</Nav.Link>
+                                <Nav.Link href="#" className="yellow-btn" onClick={toMyAccount}>{t("My account")}</Nav.Link>
+                            </Nav>}
                         </Navbar.Collapse>
                     </Navbar>
                 </div>

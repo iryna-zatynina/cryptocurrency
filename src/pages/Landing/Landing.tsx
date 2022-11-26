@@ -6,7 +6,7 @@ import Introduction from "../../сomponents/Introduction/Introduction";
 const Landing: React.FC = () => {
     return (
         <div>
-            <Header />
+            <Header showLandingButtons={true} showAccountButtons={false}/>
             <Introduction />
             <Footer />
         </div>

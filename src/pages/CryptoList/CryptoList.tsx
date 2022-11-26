@@ -2,6 +2,9 @@ import React from 'react';
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {StoreTypes} from "../../store/reducers/reducers";
+import Header from "../../сomponents/Header/Header";
+import Footer from "../../сomponents/Footer/Footer";
+import "./CryptoList.scss"
 
 const CryptoList = () => {
 
@@ -10,13 +13,14 @@ const CryptoList = () => {
 
     const logOut = () => {
         logout();
-        navigate("/")
+        navigate("/");
     }
 
     return (
-        <div>
-            cryptos
-            <button onClick={logOut}>log out</button>
+        <div className="CryptoList">
+            <Header showLandingButtons={false} showAccountButtons={true}/>
+            <button className="button" onClick={logOut}>log out</button>
+            <Footer />
         </div>
     );
 };
