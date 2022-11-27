@@ -21,5 +21,9 @@
   "Done!": "Done!",
   "This email already exists...": "This email already exists...",
   "This email is not registered": "This email is not registered",
-  "An incorrect password": "An incorrect password"
+  "An incorrect password": "An incorrect password",
+  "All Cryptocurrencies": "All Cryptocurrencies",
+  "Currency": "Currency",
+  "Price in": "Price in",
+  "Symbol": "Symbol"
 }

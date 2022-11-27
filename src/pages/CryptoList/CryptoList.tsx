@@ -5,21 +5,14 @@ import {StoreTypes} from "../../store/reducers/reducers";
 import Header from "../../сomponents/Header/Header";
 import Footer from "../../сomponents/Footer/Footer";
 import "./CryptoList.scss"
+import AllCryptos from "../../сomponents/AllCryptos/AllCryptos";
 
 const CryptoList = () => {
-
-    const {logout} = useSelector((state: StoreTypes) => state.auth.auth)
-    const navigate = useNavigate();
-
-    const logOut = () => {
-        logout();
-        navigate("/");
-    }
 
     return (
         <div className="CryptoList">
             <Header showLandingButtons={false} showAccountButtons={true}/>
-            <button className="button" onClick={logOut}>log out</button>
+            <AllCryptos />
             <Footer />
         </div>
     );

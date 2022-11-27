@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from "../../сomponents/Header/Header";
-import PersonalProfile from "../../сomponents/PersonalProfile/PersonalProfile";
 import Footer from "../../сomponents/Footer/Footer";
+import PersonalProfile from "../../сomponents/PersonalProfile/PersonalProfile";
 
 const MyAccount = () => {
     return (
