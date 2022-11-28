@@ -7,6 +7,7 @@ import {StoreTypes} from "../../store/reducers/reducers";
 import CryptoInfo, {ItemInterface} from "../CryptoInfo/CryptoInfo";
 import Dropdown from 'react-bootstrap/Dropdown';
 import {useTranslation} from "react-i18next";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 const AllCryptos = () => {
 
@@ -23,7 +24,9 @@ const AllCryptos = () => {
             .then(({data}) => {
                 setData(data.list)
             })
-            .catch()
+            .catch(() => {
+                setError(true);
+            })
             .finally(() => {
                 setLoader(false);
             })
@@ -33,10 +36,7 @@ const AllCryptos = () => {
     const {t} = useTranslation();
     const [loader, setLoader] = useState<boolean>(false);
     const [data, setData] = useState([]);
-
-    const onDropdownChange = (newCurrency) => {
-        setCurrency(newCurrency);
-    }
+    const [error, setError] = useState<boolean>(false)
 
     return (
         <div className="AllCryptos">
@@ -49,22 +49,26 @@ const AllCryptos = () => {
                             {currency}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => {onDropdownChange('USD')}} href="#/action-1">USD</Dropdown.Item>
-                            <Dropdown.Item onClick={() => {onDropdownChange('EUR')}} href="#/action-2">EUR</Dropdown.Item>
-                            <Dropdown.Item onClick={() => {onDropdownChange('UAH')}}href="#/action-3">UAH</Dropdown.Item>
+                            <Dropdown.Item onClick={() => {setCurrency('USD')}} href="#/action-1">USD</Dropdown.Item>
+                            <Dropdown.Item onClick={() => {setCurrency('EUR')}} href="#/action-2">EUR</Dropdown.Item>
+                            <Dropdown.Item onClick={() => {setCurrency('UAH')}} href="#/action-3">UAH</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>
 
-                <div className="headings">
-                    <span>N</span>
-                    <span>{t("Name")}</span>
-                    <span>{t("Price in")} {currency}</span>
-                    <span>{t("Symbol")}</span>
-                </div>
-                {data.map((item: ItemInterface, num) => {
-                   return <CryptoInfo num={num+1} item={item} key={item.id}/>
-                })}
+                {error ? <ErrorMessage /> :
+                    <div>
+                        <div className="headings">
+                            <span>N</span>
+                            <span>{t("Name")}</span>
+                            <span>{t("Price in")} {currency}</span>
+                            <span>{t("Symbol")}</span>
+                        </div>
+                        {data.map((item: ItemInterface, num) => {
+                            return <CryptoInfo num={num+1} item={item} key={item.id}/>
+                        })}
+                    </div>
+                }
             </div>
             {loader && <Loader />}
         </div>
