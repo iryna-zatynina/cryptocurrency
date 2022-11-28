@@ -5,6 +5,7 @@ import axios from "axios";
 import {useSelector} from "react-redux";
 import {StoreTypes} from "../../store/reducers/reducers";
 import Loader from "../Loader/Loader";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 interface IData {
     name: string,
@@ -31,8 +32,8 @@ const PersonalProfile = () => {
                     regDate: formatDate(data.dc)
                 })
             })
-            .catch((error) => {
-                console.log(error)
+            .catch(() => {
+                setError(true)
             })
             .finally(() => {
                 setLoader(false);
@@ -41,6 +42,7 @@ const PersonalProfile = () => {
 
     const {t} = useTranslation();
     const [loader, setLoader] = useState<boolean>(false);
+    const [error, setError] = useState<boolean>(false);
     const [data, setData] = useState<IData>({
         name: '',
         email: '',
@@ -55,17 +57,19 @@ const PersonalProfile = () => {
     return (
         <div className="PersonalProfile">
             <div className="container">
-                <div className="wrapper">
-                    <h1>{t("My account")}</h1>
-                    <p>{t("Name")}:</p>
-                    <span>{data.name}</span>
-                    <p>{t("Email")}:</p>
-                    <span>{data.email}</span>
-                    <p>{t("Phone number")}:</p>
-                    <span>{data.tel}</span>
-                    <p>{t("Registration date")}:</p>
-                    <span>{data.regDate}</span>
-                </div>
+                {error ? <ErrorMessage /> :
+                    <div className="wrapper">
+                        <h1>{t("My account")}</h1>
+                        <p>{t("Name")}:</p>
+                        <span>{data.name}</span>
+                        <p>{t("Email")}:</p>
+                        <span>{data.email}</span>
+                        <p>{t("Phone number")}:</p>
+                        <span>{data.tel}</span>
+                        <p>{t("Registration date")}:</p>
+                        <span>{data.regDate}</span>
+                    </div>
+                }
             </div>
             {loader && <Loader />}
         </div>

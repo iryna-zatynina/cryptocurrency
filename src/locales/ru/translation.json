@@ -21,5 +21,9 @@
   "Done!": "Готово!",
   "This email already exists...": "Такой имейл уже существует...",
   "This email is not registered": "Такой имейл не зарегестрирован",
-  "An incorrect password": "Неправельный пароль"
+  "An incorrect password": "Неправельный пароль",
+  "All Cryptocurrencies": "Все Криптовалюты",
+  "Currency": "Валюта",
+  "Price in": "Цена в",
+  "Symbol": "Символ"
 }
