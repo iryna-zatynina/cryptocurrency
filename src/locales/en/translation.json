@@ -25,5 +25,12 @@
   "All Cryptocurrencies": "All Cryptocurrencies",
   "Currency": "Currency",
   "Price in": "Price in",
-  "Symbol": "Symbol"
+  "Symbol": "Symbol",
+  "BACK": "BACK",
+  "Last update": "Last update",
+  "Top rank": "Top rank",
+  "Chg(24H)": "Chg(24H)",
+  "Chg(7D)": "Chg(7D)",
+  "Chg(30D)": "Chg(30D)",
+  "Chg(60D)": "Chg(60D)"
 }

@@ -1,0 +1,15 @@
+.CurrencyDropdown {
+    button {
+      background-color: white;
+      color: black;
+      border: 1px solid black;
+      &:hover {
+        background-color: darkgoldenrod;
+        border: 1px solid black;
+      }
+      &:first-child:active{
+        background-color: darkgoldenrod;
+        border: 1px solid black;
+      }
+    }
+}

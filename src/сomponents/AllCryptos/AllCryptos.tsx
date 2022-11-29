@@ -1,18 +1,26 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import "./AllCryptos.scss"
 import axios from "axios";
 import Loader from "../Loader/Loader";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {StoreTypes} from "../../store/reducers/reducers";
-import CryptoInfo, {ItemInterface} from "../CryptoInfo/CryptoInfo";
-import Dropdown from 'react-bootstrap/Dropdown';
+import CryptoInfo, {ICrypto} from "../CryptoInfo/CryptoInfo";
 import {useTranslation} from "react-i18next";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import CurrencyDropdown from "../CurrencyDropdown/CurrencyDropdown";
+import {getCryptosAction} from "../../store/reducers/cryptos/cryptosReduser";
 
 const AllCryptos = () => {
 
     const {token} = useSelector((state: StoreTypes) => state.auth.auth);
     const [currency, setCurrency] = useState('USD');
+
+    const dispatch = useDispatch()
+    const cryptos = useSelector((state: StoreTypes) => state.cryptosReducer.cryptos)
+
+    const setCryptos = useCallback((cryptos: ICrypto[]) => {
+        dispatch(getCryptosAction(cryptos))
+    }, [dispatch])
 
     useEffect(() => {
         setLoader(true);
@@ -22,7 +30,7 @@ const AllCryptos = () => {
             }
         })
             .then(({data}) => {
-                setData(data.list)
+                setCryptos(data.list);
             })
             .catch(() => {
                 setError(true);
@@ -30,12 +38,11 @@ const AllCryptos = () => {
             .finally(() => {
                 setLoader(false);
             })
-    }, [token, currency])
+    }, [token, currency, setCryptos])
 
 
     const {t} = useTranslation();
     const [loader, setLoader] = useState<boolean>(false);
-    const [data, setData] = useState([]);
     const [error, setError] = useState<boolean>(false)
 
     return (
@@ -44,16 +51,7 @@ const AllCryptos = () => {
                 <h1>{t("All Cryptocurrencies")}</h1>
                 <div className="chose-currency">
                     <span>{t("Currency")}:</span>
-                    <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                            {currency}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => {setCurrency('USD')}} href="#/action-1">USD</Dropdown.Item>
-                            <Dropdown.Item onClick={() => {setCurrency('EUR')}} href="#/action-2">EUR</Dropdown.Item>
-                            <Dropdown.Item onClick={() => {setCurrency('UAH')}} href="#/action-3">UAH</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                    <CurrencyDropdown currency={currency} setCurrency={setCurrency} />
                 </div>
 
                 {error ? <ErrorMessage /> :
@@ -64,7 +62,7 @@ const AllCryptos = () => {
                             <span>{t("Price in")} {currency}</span>
                             <span>{t("Symbol")}</span>
                         </div>
-                        {data.map((item: ItemInterface, num) => {
+                        {cryptos.map((item: ICrypto, num) => {
                             return <CryptoInfo num={num+1} item={item} key={item.id}/>
                         })}
                     </div>

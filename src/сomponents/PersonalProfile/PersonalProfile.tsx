@@ -6,6 +6,7 @@ import {useSelector} from "react-redux";
 import {StoreTypes} from "../../store/reducers/reducers";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import BackButton from "../BackButton/BackButton";
 
 interface IData {
     name: string,
