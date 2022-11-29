@@ -1,0 +1,70 @@
+.otherCrypto {
+  h1 {
+    font-weight: bold;
+    border-bottom: 2px solid #c2c2c2;
+    padding: 0 20px 20px 20px;
+  }
+  .wrapper {
+    padding: 20px;
+    border-bottom: 2px solid #c2c2c2;
+  }
+
+  .info-block {
+    list-style-type: none;
+    li {
+      border-bottom: 1px dotted #C2C2C2;
+      position: relative;
+      padding: 0;
+      margin-bottom:5px;
+      span {
+        background-color: #FFF;
+        margin: 0;
+        bottom: -5px;
+        font-size: 20px;
+      }
+      .text {
+        position :relative;
+        margin-right:7em; /* Задается чтобы текст не заходил на номера страниц */
+        padding-right:2px;
+      }
+      .num {
+        position: absolute;
+        right: 0;
+        padding-left:2px;
+      }
+    }
+  }
+
+  p {
+    margin-bottom: 10px;
+    font-size: 22px;
+  }
+  .currency-block {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 10px;
+
+    h2,
+    span{
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .price-change {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+  }
+  .update {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    &:hover {
+      color: darkgoldenrod;
+    }
+  }
+}
