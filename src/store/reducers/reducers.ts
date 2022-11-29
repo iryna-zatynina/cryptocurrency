@@ -1,15 +1,15 @@
 import {combineReducers} from "redux";
 import {authReducer} from "./auth/auth";
 import {AuthState} from "./auth/types";
-import {CryptosState} from "./cryptos/types";
-import {cryptosReducer} from "./cryptos/cryptosReduser";
+import {CurrencyState} from "./currency/types";
+import {currencyReducer} from "./currency/currencyReduser";
 
 export interface StoreTypes {
     auth: AuthState,
-    cryptosReducer: CryptosState
+    currencyReducer: CurrencyState
 }
 
 export const rootReducer = combineReducers({
     auth: authReducer,
-    cryptosReducer: cryptosReducer
+    currencyReducer: currencyReducer
 })

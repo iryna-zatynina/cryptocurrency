@@ -17,8 +17,7 @@ const CryptoInfo = ({item, num}: CryptoInfoProps) => {
 
     return (
         <div className="CryptoInfo">
-            <Link to={`${num}`} onClick={() => {
-                console.log(item)}}>
+            <Link to={`${num}`}>
                 <span>{num}</span>
                 <span className="name">{item.name}</span>
                 <span>{item.price}</span>
