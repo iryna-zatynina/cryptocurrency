@@ -32,5 +32,16 @@
   "Chg(24H)": "Chg(24H)",
   "Chg(7D)": "Chg(7D)",
   "Chg(30D)": "Chg(30D)",
-  "Chg(60D)": "Chg(60D)"
+  "Chg(60D)": "Chg(60D)",
+  "Change profile": "Change profile",
+  "Change name": "Change name",
+  "New name": "New name",
+  "Change password": "Change password",
+  "Current password": "Current password",
+  "New password": "New password",
+  "Submit": "Submit",
+  "Done": "Done",
+  "Error": "Error",
+  "An incorrect old password": "An incorrect old password",
+  "Registration date": "Registration date"
 }
