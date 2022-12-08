@@ -25,7 +25,6 @@ const PersonalProfile = ({loader, error, getPersonalData}: PersonalProfileProps)
 
     useEffect(() => {
         getPersonalData();
-
     }, [])
 
     const {t} = useTranslation();

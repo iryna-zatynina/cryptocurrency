@@ -5,7 +5,7 @@ import useInput from "../../hooks/input.hook";
 import axios from "axios";
 import {useSelector} from "react-redux";
 import {StoreTypes} from "../../store/reducers/reducers";
-import {NAME_REGEX} from "../../shared/global.variables";
+import {CLEAR_STRING, ClEAR_STYLE, ERROR_STYLE, NAME_REGEX} from "../../shared/global.variables";
 import useSubmitButton from "../../hooks/submitButton.hook";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
@@ -31,30 +31,30 @@ const ChangeProfile = forwardRef<Ref, ChangeProfileProps>(({onChangeButtonClick,
 
     const nameValidation = (name) => {
         if (!NAME_REGEX.test(name.value) && name.value.length !== 0) {
-            name.clearValue();
-            name.toggleToErrorStyle();
-            name.addErrorMessage("Enter only latin letters");
+            name.setValue(CLEAR_STRING);
+            name.setInputStyle(ERROR_STYLE);
+            name.setPlaceholder("Enter only latin letters");
             valid = false;
         } else if (name.value.length < 3 && name.value.length !== 0) {
-            name.clearValue();
-            name.toggleToErrorStyle();
-            name.addErrorMessage("Too short name")
+            name.setValue(CLEAR_STRING);
+            name.setInputStyle(ERROR_STYLE);
+            name.setPlaceholder("Too short name")
             valid = false;
         } else if (name.value.length === 0) {
-            name.clearValue();
-            name.toggleToErrorStyle();
+            name.setValue(CLEAR_STRING);
+            name.setInputStyle(ERROR_STYLE);
             valid = false;
         }
     }
     const passwordValidation = (password) => {
         if (password.value.length < 3 && password.value.length !== 0) {
-            password.clearValue();
-            password.toggleToErrorStyle()
-            password.addErrorMessage("Too short password")
+            password.setValue(CLEAR_STRING);
+            password.setInputStyle(ERROR_STYLE);
+            password.setPlaceholder("Too short password")
             valid = false;
         } else if (password.value.length === 0) {
-            password.clearValue();
-            password.toggleToErrorStyle()
+            password.setValue(CLEAR_STRING);
+            password.setInputStyle(ERROR_STYLE);
             valid = false;
         }
     }
@@ -62,7 +62,7 @@ const ChangeProfile = forwardRef<Ref, ChangeProfileProps>(({onChangeButtonClick,
         nameValidation(name);
         if (valid) {
             setLoader(true);
-            axios.post(`https://user-simple.herokuapp.com/auth/changeAccountName`, {
+            axios.post(`http://31.42.189.118:8000/auth/changeAccountName`, {
                 name: name.value
             },{
                 headers: {
@@ -70,8 +70,8 @@ const ChangeProfile = forwardRef<Ref, ChangeProfileProps>(({onChangeButtonClick,
                 }
             })
                 .then(() => {
-                    name.clearValue();
-                    name.toggleToNormalStyle();
+                    name.setValue(CLEAR_STRING);
+                    name.setInputStyle(ClEAR_STYLE);
                     submitName.toggleToDone();
                     setTimeout(() => {
                         onChangeButtonClick();
@@ -92,7 +92,7 @@ const ChangeProfile = forwardRef<Ref, ChangeProfileProps>(({onChangeButtonClick,
         passwordValidation(newPassword);
         if (valid) {
             setLoader(true);
-            axios.post(`https://user-simple.herokuapp.com/auth/changeAccountPassword`, {
+            axios.post(`http://31.42.189.118:8000/auth/changeAccountPassword`, {
                 oldPassword: currentPassword.value,
                 newPassword: newPassword.value
             },{
@@ -101,14 +101,14 @@ const ChangeProfile = forwardRef<Ref, ChangeProfileProps>(({onChangeButtonClick,
                 }
             })
                 .then(({data}) => {
-                    currentPassword.clearValue();
-                    newPassword.clearValue();
+                    currentPassword.setValue(CLEAR_STRING);
+                    newPassword.setValue(CLEAR_STRING);
                     if (data.status === "an incorrect old password") {
                         submitPassword.toggleToError("Error");
-                        currentPassword.addPlaceholder("An incorrect old password");
-                        currentPassword.toggleToErrorStyle();
-                        currentPassword.clearValue();
-                        newPassword.clearValue();
+                        currentPassword.setPlaceholder("An incorrect old password");
+                        currentPassword.setInputStyle(ERROR_STYLE);
+                        currentPassword.setValue(CLEAR_STRING);
+                        newPassword.setValue(CLEAR_STRING);
                         setTimeout(() => {
                             submitPassword.toggleToSubmit()
                         }, 1000)
@@ -139,13 +139,13 @@ const ChangeProfile = forwardRef<Ref, ChangeProfileProps>(({onChangeButtonClick,
                             <span>{t("New name")}:</span>
                             <input
                                 onFocus={() => {
-                                    name.toggleToNormalStyle();
-                                    name.addPlaceholder("")
+                                    name.setInputStyle(ClEAR_STYLE);
+                                    name.setPlaceholder(CLEAR_STRING)
                                 }}
                                 placeholder={t(name.placeholder)}
-                                style={name.errorStyle}
+                                style={name.inputStyle}
                                 value={name.value}
-                                onChange={name.onChange} type="text"/>
+                                onChange={(e) => name.setValue(e.target.value)} type="text"/>
                             <button
                                 style={submitName.style}
                                 onClick={changeName}
@@ -159,24 +159,24 @@ const ChangeProfile = forwardRef<Ref, ChangeProfileProps>(({onChangeButtonClick,
                             <span>{t("Current password")}:</span>
                             <input
                                 onFocus={() => {
-                                    currentPassword.toggleToNormalStyle();
-                                    currentPassword.addPlaceholder("")
+                                    currentPassword.setInputStyle(ClEAR_STYLE);
+                                    currentPassword.setPlaceholder(CLEAR_STRING)
                                 }}
                                 placeholder={t(currentPassword.placeholder)}
-                                style={currentPassword.errorStyle}
+                                style={currentPassword.inputStyle}
                                 value={currentPassword.value}
-                                onChange={currentPassword.onChange}
+                                onChange={(e) => currentPassword.setValue(e.target.value)}
                                 type="password"/>
                             <span>{t("New password")}:</span>
                             <input
                                 onFocus={() => {
-                                    newPassword.toggleToNormalStyle();
-                                    newPassword.addPlaceholder("")
+                                    newPassword.setInputStyle(ClEAR_STYLE);
+                                    newPassword.setPlaceholder(CLEAR_STRING)
                                 }}
                                 placeholder={t(newPassword.placeholder)}
-                                style={newPassword.errorStyle}
+                                style={newPassword.inputStyle}
                                 value={newPassword.value}
-                                onChange={newPassword.onChange}
+                                onChange={(e) => newPassword.setValue(e.target.value)}
                                 type="password"/>
                             <button
                                 style={submitPassword.style}

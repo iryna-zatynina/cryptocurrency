@@ -18,7 +18,7 @@ const CryptoList = () => {
 
     useEffect(() => {
         setLoader(true);
-        axios.get(`https://user-simple.herokuapp.com/crypto/list?currency=${currency}`, {
+        axios.get(`http://31.42.189.118:8000/crypto/list?currency=${currency}`, {
             headers: {
                 'authorization': token
             }

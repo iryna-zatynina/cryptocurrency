@@ -5,7 +5,7 @@ import "./Registration.scss"
 import {useTranslation} from "react-i18next";
 import axios from "axios";
 import Loader from "../Loader/Loader";
-import {NAME_REGEX, EMAIL_REGEX} from "../../shared/global.variables"
+import {NAME_REGEX, EMAIL_REGEX, CLEAR_STRING, ClEAR_STYLE, ERROR_STYLE} from "../../shared/global.variables"
 import useInput from "../../hooks/input.hook";
 import useSubmitButton from "../../hooks/submitButton.hook";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
@@ -32,50 +32,52 @@ const Registration = ({showRegistration, handleCloseRegistration}: RegistrationP
 
     const emailValidation = () => {
         if (!EMAIL_REGEX.test(email.value) && email.value.length !== 0) {
-            email.clearValue();
-            email.toggleToErrorStyle();
-            email.addPlaceholder("Don't forget about @");
+            email.setValue(CLEAR_STRING);
+            email.setInputStyle(ERROR_STYLE);
+            email.setPlaceholder("Don't forget about @");
             valid = false;
         } else if (email.value.length === 0) {
-            email.clearValue();
-            email.toggleToErrorStyle();
+            email.setValue(CLEAR_STRING);
+            email.setInputStyle(ERROR_STYLE);
             valid = false;
+        } else {
+            valid = true
         }
     }
     const passwordValidation = () => {
         if (password.value.length < 3 && password.value.length !== 0) {
-            password.clearValue();
-            password.toggleToErrorStyle();
-            password.addPlaceholder("Too short password");
+            password.setValue(CLEAR_STRING);
+            password.setInputStyle(ERROR_STYLE);
+            password.setPlaceholder("Too short password");
             valid = false;
         } else if (password.value.length === 0) {
-            password.clearValue();
-            password.toggleToErrorStyle();
+            password.setValue(CLEAR_STRING);
+            password.setInputStyle(ERROR_STYLE);
             valid = false;
         }
     }
     const nameValidation = () => {
         if (!NAME_REGEX.test(name.value) && name.value.length !== 0) {
-            name.clearValue();
-            name.toggleToErrorStyle();
-            name.addPlaceholder("Enter only latin letters");
+            name.setValue(CLEAR_STRING);
+            name.setInputStyle(ERROR_STYLE);
+            name.setPlaceholder("Enter only latin letters");
             valid = false;
         } else if (name.value.length < 3 && name.value.length !== 0) {
-            name.clearValue();
-            name.toggleToErrorStyle();
-            name.addPlaceholder("Too short name")
+            name.setValue(CLEAR_STRING);
+            name.setInputStyle(ERROR_STYLE);
+            name.setPlaceholder("Too short name")
             valid = false;
         } else if (name.value.length === 0) {
-            name.clearValue();
-            name.toggleToErrorStyle();
+            name.setValue(CLEAR_STRING);
+            name.setInputStyle(ERROR_STYLE);
             valid = false;
         }
     }
     const telValidation = () => {
         if (tel.value.length < 10 && tel.value.length !== 0) {
-            tel.clearValue();
-            tel.toggleToErrorStyle()
-            tel.addPlaceholder("Too short phone number")
+            tel.setValue(CLEAR_STRING);
+            tel.setInputStyle(ClEAR_STYLE);
+            tel.setPlaceholder("Too short phone number")
             valid = false;
         }
     }
@@ -87,7 +89,7 @@ const Registration = ({showRegistration, handleCloseRegistration}: RegistrationP
         telValidation();
         if (valid) {
             setShowLoader(true)
-            axios.post(`https://user-simple.herokuapp.com/auth/registration`, {
+            axios.post(`http://31.42.189.118:8000/auth/registration`, {
                 email: email.value,
                 password: password.value,
                 fullName: name.value,
@@ -100,10 +102,10 @@ const Registration = ({showRegistration, handleCloseRegistration}: RegistrationP
                 .then((response) => {
                     if (response.data.status === "user created") {
                         submitButton.toggleToDone();
-                        email.clearValue()
-                        password.clearValue()
-                        name.clearValue()
-                        tel.clearValue()
+                        email.setValue(CLEAR_STRING)
+                        password.setValue(CLEAR_STRING)
+                        name.setValue(CLEAR_STRING)
+                        tel.setValue(CLEAR_STRING)
                         setTimeout(() => {
                             handleCloseRegistration();
                         }, 1000)
@@ -136,30 +138,30 @@ const Registration = ({showRegistration, handleCloseRegistration}: RegistrationP
                                     type="email"
                                     placeholder={t(email.placeholder)}
                                     value={email.value}
-                                    onChange={email.onChange}
-                                    onFocus={() => {email.addPlaceholder("Enter address"); email.toggleToNormalStyle()}}
-                                    style={email.errorStyle}/>
+                                    onChange={(e) => email.setValue(e.target.value)}
+                                    onFocus={() => {email.setPlaceholder("Enter address"); email.setInputStyle(ClEAR_STYLE)}}
+                                    style={email.inputStyle}/>
                                 <input
                                     type="password"
                                     placeholder={t(password.placeholder)}
                                     value={password.value}
-                                    onChange={password.onChange}
-                                    onFocus={() => {password.addPlaceholder("Password"); password.toggleToNormalStyle()}}
-                                    style={password.errorStyle}/>
+                                    onChange={(e) => password.setValue(e.target.value)}
+                                    onFocus={() => {password.setPlaceholder("Password"); password.setInputStyle(ClEAR_STYLE)}}
+                                    style={password.inputStyle}/>
                                 <input
                                     type="text"
                                     placeholder={t(name.placeholder)}
                                     value={name.value}
-                                    onChange={name.onChange}
-                                    onFocus={() => {name.addPlaceholder("your name"); name.toggleToNormalStyle()}}
-                                    style={name.errorStyle}/>
+                                    onChange={(e) => name.setValue(e.target.value)}
+                                    onFocus={() => {name.setPlaceholder("your name"); name.setInputStyle(ClEAR_STYLE)}}
+                                    style={name.inputStyle}/>
                                 <input
                                     type="tel"
                                     placeholder={t(tel.placeholder)}
                                     value={tel.value}
-                                    onChange={tel.onChange}
-                                    onFocus={() => {tel.toggleToNormalStyle(); tel.addPlaceholder("Phone number (optional)")}}
-                                    style={tel.errorStyle}/>
+                                    onChange={(e) => tel.setValue(e.target.value)}
+                                    onFocus={() => {tel.setInputStyle(ClEAR_STYLE); tel.setPlaceholder("Phone number (optional)")}}
+                                    style={tel.inputStyle}/>
                             </form>
                         </Modal.Body>
                         <Modal.Footer>

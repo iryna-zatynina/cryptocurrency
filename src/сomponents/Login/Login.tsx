@@ -67,7 +67,7 @@ const Login = ({showLogin, handleCloseLogin}: LoginProps) => {
         validation();
         if (valid) {
             setShowLoader(true)
-            axios.post(`https://user-simple.herokuapp.com/auth/login`, {
+            axios.post(`http://31.42.189.118:8000/auth/login`, {
                 email: emailValue,
                 password: passwordValue
             }, {

@@ -46,7 +46,7 @@ const MyAccount = () => {
 
     const getPersonalData = () => {
         setLoader(true);
-        axios.get(`https://user-simple.herokuapp.com/auth/getAccountInformation`, {
+        axios.get(`http://31.42.189.118:8000/auth/getAccountInformation`, {
             headers: {
                 'authorization': token
             }
