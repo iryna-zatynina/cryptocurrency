@@ -6,10 +6,10 @@ import CurrencyDropdown from "../../сomponents/CurrencyDropdown/CurrencyDropdow
 import ErrorMessage from "../../сomponents/ErrorMessage/ErrorMessage";
 import CryptoInfo, {ICrypto} from "../../сomponents/CryptoInfo/CryptoInfo";
 import Loader from "../../сomponents/Loader/Loader";
-import {useSelector} from "react-redux";
 import {StoreTypes} from "../../store/reducers/reducers";
 import axios from "axios";
 import {useTranslation} from "react-i18next";
+import {useSelector} from "react-redux";
 
 const CryptoList = () => {
 
@@ -18,7 +18,7 @@ const CryptoList = () => {
 
     useEffect(() => {
         setLoader(true);
-        axios.get(`https://user-simple.herokuapp.com/crypto/list?currency=${currency}`, {
+        axios.get(`http://31.42.189.118:8000/crypto/list?currency=${currency}`, {
             headers: {
                 'authorization': token
             }

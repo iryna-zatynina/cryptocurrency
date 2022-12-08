@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {EMAIL_REGEX} from "../../shared/global.variables"
 import {useSelector} from "react-redux";
 import {StoreTypes} from "../../store/reducers/reducers";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 interface LoginProps {
     showLogin: boolean,
@@ -22,6 +23,7 @@ const Login = ({showLogin, handleCloseLogin}: LoginProps) => {
     const {login} = useSelector((state: StoreTypes) => state.auth.auth);
 
     const [showLoader, setShowLoader] = useState<boolean>(false);
+    const [error, setError] = useState<boolean>(false);
 
     const [emailValue, setEmailValue] = useState<string>("");
     const [passwordValue, setPasswordValue] = useState<string>("");
@@ -65,9 +67,13 @@ const Login = ({showLogin, handleCloseLogin}: LoginProps) => {
         validation();
         if (valid) {
             setShowLoader(true)
-            axios.post(`https://user-simple.herokuapp.com/auth/login`, {
+            axios.post(`http://31.42.189.118:8000/auth/login`, {
                 email: emailValue,
                 password: passwordValue
+            }, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*'
+                }
             })
                 .then((response) => {
                     setShowLoader(false);
@@ -89,6 +95,12 @@ const Login = ({showLogin, handleCloseLogin}: LoginProps) => {
                         }, 1000)
                     }
                 })
+                .catch(() => {
+                    setError(true)
+                })
+                .finally(() => {
+                    setShowLoader(false);
+                })
         }
     }
 
@@ -109,24 +121,25 @@ const Login = ({showLogin, handleCloseLogin}: LoginProps) => {
     return (
         <>
             <Modal className="Login " show={showLogin} onHide={handleCloseLogin} centered>
-                <Modal.Header closeButton>
-                </Modal.Header>
-                <Modal.Body>
-                    <Modal.Title>{t("Log In")}</Modal.Title>
-                    <form>
-                        <input type="email" placeholder={t(emailPlaceholder)} value={emailValue} onChange={onEmailChange} style={emailStyle}/>
-                        <input type="password" placeholder={t(passwordPlaceholder)} value={passwordValue} onChange={onPasswordChange} style={passwordStyle}/>
-                    </form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button className="continue-btn" onClick={loginPros} style={buttonStyle}>
-                        {t(buttonValue)}
-                    </Button>
-                </Modal.Footer>
+                {error ? <ErrorMessage /> :
+                <div>
+                    <Modal.Header closeButton></Modal.Header>
+                    <Modal.Body>
+                        <Modal.Title>{t("Log In")}</Modal.Title>
+                        <form>
+                            <input type="email" placeholder={t(emailPlaceholder)} value={emailValue} onChange={onEmailChange} style={emailStyle}/>
+                            <input type="password" placeholder={t(passwordPlaceholder)} value={passwordValue} onChange={onPasswordChange} style={passwordStyle}/>
+                        </form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button className="continue-btn" onClick={loginPros} style={buttonStyle}>
+                            {t(buttonValue)}
+                        </Button>
+                    </Modal.Footer>
+                </div>}
             </Modal>
             {showLoader && <Loader />}
         </>
     );
 };
-
 export default Login;

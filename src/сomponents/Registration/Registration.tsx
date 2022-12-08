@@ -5,7 +5,10 @@ import "./Registration.scss"
 import {useTranslation} from "react-i18next";
 import axios from "axios";
 import Loader from "../Loader/Loader";
-import {NAME_REGEX, EMAIL_REGEX} from "../../shared/global.variables"
+import {NAME_REGEX, EMAIL_REGEX, CLEAR_STRING, ClEAR_STYLE, ERROR_STYLE} from "../../shared/global.variables"
+import useInput from "../../hooks/input.hook";
+import useSubmitButton from "../../hooks/submitButton.hook";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 interface RegistrationProps {
     showRegistration: boolean,
@@ -17,145 +20,159 @@ const Registration = ({showRegistration, handleCloseRegistration}: RegistrationP
     const {t} = useTranslation();
 
     const [showLoader, setShowLoader] = useState<boolean>(false);
+    const [error, setError] = useState<boolean>(false);
 
-    const [emailValue, setEmailValue] = useState<string>("");
-    const [passwordValue, setPasswordValue] = useState<string>("");
-    const [nameValue, setNameValue] = useState<string>("");
-    const [telValue, setTelValue] = useState<string>("");
-
-    const [emailPlaceholder, setEmailPlaceholder] = useState<string>("Enter address");
-    const [passwordPlaceholder, setPasswordPlaceholder] = useState<string>("Password");
-    const [namePlaceholder, setNamePlaceholder] = useState<string>("Your name");
-    const [telPlaceholder, setTelPlaceholder] = useState<string>("Phone number (optional)");
-
-    const [emailStyle, setEmailStyle] = useState<Object>({background: 'white'});
-    const [passwordStyle, setPasswordStyle] = useState<Object>({background: 'white'});
-    const [nameStyle, setNameStyle] = useState<Object>({background: 'white'});
-    const [telStyle, setTelStyle] = useState<Object>({background: 'white'});
-
-    const [buttonValue, setButtonValue] = useState<string>("Continue");
-    const [buttonStyle, setButtonStyle] = useState<Object>({background: "lightgray"});
+    const email = useInput("", "Enter address");
+    const password = useInput("", "Password");
+    const name = useInput("", "Your name");
+    const tel = useInput("", "Phone number (optional)");
+    const submitButton = useSubmitButton("Continue");
 
     let valid: boolean = true;
 
-    const validation = () => {
-        if (!EMAIL_REGEX.test(emailValue) && emailValue.length !== 0) {
-            setEmailValue("")
-            setEmailStyle({background: '#fce6e6'})
-            setEmailPlaceholder("Don't forget about @")
+    const emailValidation = () => {
+        if (!EMAIL_REGEX.test(email.value) && email.value.length !== 0) {
+            email.setValue(CLEAR_STRING);
+            email.setInputStyle(ERROR_STYLE);
+            email.setPlaceholder("Don't forget about @");
             valid = false;
-        } else if (emailValue.length === 0) {
-            setEmailValue("")
-            setEmailStyle({background: '#fce6e6'})
+        } else if (email.value.length === 0) {
+            email.setValue(CLEAR_STRING);
+            email.setInputStyle(ERROR_STYLE);
+            valid = false;
+        } else {
+            valid = true
+        }
+    }
+    const passwordValidation = () => {
+        if (password.value.length < 3 && password.value.length !== 0) {
+            password.setValue(CLEAR_STRING);
+            password.setInputStyle(ERROR_STYLE);
+            password.setPlaceholder("Too short password");
+            valid = false;
+        } else if (password.value.length === 0) {
+            password.setValue(CLEAR_STRING);
+            password.setInputStyle(ERROR_STYLE);
             valid = false;
         }
-
-        if (passwordValue.length < 3 && passwordValue.length !== 0) {
-            setPasswordStyle({background: '#fce6e6'})
-            setPasswordValue("")
-            setPasswordPlaceholder("Too short password")
+    }
+    const nameValidation = () => {
+        if (!NAME_REGEX.test(name.value) && name.value.length !== 0) {
+            name.setValue(CLEAR_STRING);
+            name.setInputStyle(ERROR_STYLE);
+            name.setPlaceholder("Enter only latin letters");
             valid = false;
-        } else if (passwordValue.length === 0) {
-            setPasswordValue("")
-            setPasswordStyle({background: '#fce6e6'})
+        } else if (name.value.length < 3 && name.value.length !== 0) {
+            name.setValue(CLEAR_STRING);
+            name.setInputStyle(ERROR_STYLE);
+            name.setPlaceholder("Too short name")
             valid = false;
-        }
-
-        if (!NAME_REGEX.test(nameValue) && nameValue.length !== 0) {
-            setNameValue("")
-            setNameStyle({background: '#fce6e6'})
-            setNamePlaceholder("Enter only latin letters")
-            valid = false;
-        } else if (nameValue.length < 3 && nameValue.length !== 0) {
-            setNameStyle({background: '#fce6e6'})
-            setNameValue("")
-            setNamePlaceholder("Too short name")
-            valid = false;
-        } else if (nameValue.length === 0) {
-            setNameStyle({background: '#fce6e6'})
-            setNameValue("")
+        } else if (name.value.length === 0) {
+            name.setValue(CLEAR_STRING);
+            name.setInputStyle(ERROR_STYLE);
             valid = false;
         }
-        if (telValue.length < 10 && telValue.length !== 0) {
-            setTelStyle({background: '#fce6e6'})
-            setTelValue("")
-            setTelPlaceholder("Too short phone number")
+    }
+    const telValidation = () => {
+        if (tel.value.length < 10 && tel.value.length !== 0) {
+            tel.setValue(CLEAR_STRING);
+            tel.setInputStyle(ClEAR_STYLE);
+            tel.setPlaceholder("Too short phone number")
             valid = false;
         }
     }
 
     const register = () => {
-        validation();
+        emailValidation();
+        passwordValidation();
+        nameValidation();
+        telValidation();
         if (valid) {
             setShowLoader(true)
-            axios.post(`https://user-simple.herokuapp.com/auth/registration`, {
-                email: emailValue,
-                password: passwordValue,
-                fullName: nameValue,
-                phone: telValue === "" ? null : telValue
+            axios.post(`http://31.42.189.118:8000/auth/registration`, {
+                email: email.value,
+                password: password.value,
+                fullName: name.value,
+                phone: tel.value === "" ? null : tel.value
+            }, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*'
+                }
             })
                 .then((response) => {
-                    setShowLoader(false);
                     if (response.data.status === "user created") {
-                        setButtonValue("Done!");
-                        setButtonStyle({background: "green"})
-                        setEmailValue("");
-                        setPasswordValue("");
-                        setNameValue("")
-                        setTelValue("")
+                        submitButton.toggleToDone();
+                        email.setValue(CLEAR_STRING)
+                        password.setValue(CLEAR_STRING)
+                        name.setValue(CLEAR_STRING)
+                        tel.setValue(CLEAR_STRING)
                         setTimeout(() => {
                             handleCloseRegistration();
                         }, 1000)
                     } else if (response.data.status === "email is used") {
-                        setButtonValue("This email already exists...");
-                        setButtonStyle({background: "red"})
+                        submitButton.toggleToError("This email already exists...");
                     }
+                })
+                .catch(() => {
+                    setError(true)
+                })
+                .finally(() => {
+                    setShowLoader(false);
                 })
         }
     }
 
-    const onEmailChange = (e) => {
-        setEmailValue(e.target.value);
-        setEmailStyle({background: 'white'});
-        setButtonValue("Continue");
-        setButtonStyle({background: "lightgrey"})
-    }
-    const onPasswordChange = (e) => {
-        setPasswordValue(e.target.value);
-        setPasswordStyle({background: 'white'});
-    }
-    const onNameChange = (e) => {
-        setNameValue(e.target.value);
-        setNameStyle({background: 'white'});
-    }
-    const onTelChange = (e) => {
-        setTelValue(e.target.value);
-    }
-    const onTelFocus = () => {
-        setTelStyle({background: 'white'})
-        setTelPlaceholder("Phone number (optional)")
-    }
-
     return (
         <>
+            {error && <ErrorMessage />}
             <Modal className="Registration" show={showRegistration} onHide={handleCloseRegistration} centered>
-                <Modal.Header closeButton>
-                </Modal.Header>
-                <Modal.Body>
-                    <Modal.Title>{t("Sign Up")}</Modal.Title>
-                    <p>{t("Already have an account?")} <span onClick={handleCloseRegistration}>{t("Login")}</span></p>
-                    <form>
-                        <input type="email" placeholder={t(emailPlaceholder)} value={emailValue} onChange={onEmailChange} style={emailStyle}/>
-                        <input type="password" placeholder={t(passwordPlaceholder)} value={passwordValue} onChange={onPasswordChange} style={passwordStyle}/>
-                        <input type="text" placeholder={t(namePlaceholder)} value={nameValue} onChange={onNameChange} style={nameStyle}/>
-                        <input type="tel" placeholder={t(telPlaceholder)} value={telValue} onChange={onTelChange} onFocus={onTelFocus} style={telStyle}/>
-                    </form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button className="continue-btn" onClick={register} style={buttonStyle}>
-                        {t(buttonValue)}
-                    </Button>
-                </Modal.Footer>
+                {error ? <ErrorMessage /> :
+                    <div>
+                        <Modal.Header closeButton>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Modal.Title>{t("Sign Up")}</Modal.Title>
+                            <p>{t("Already have an account?")} <span onClick={handleCloseRegistration}>{t("Login")}</span></p>
+                            <form>
+                                <input
+                                    type="email"
+                                    placeholder={t(email.placeholder)}
+                                    value={email.value}
+                                    onChange={(e) => email.setValue(e.target.value)}
+                                    onFocus={() => {email.setPlaceholder("Enter address"); email.setInputStyle(ClEAR_STYLE)}}
+                                    style={email.inputStyle}/>
+                                <input
+                                    type="password"
+                                    placeholder={t(password.placeholder)}
+                                    value={password.value}
+                                    onChange={(e) => password.setValue(e.target.value)}
+                                    onFocus={() => {password.setPlaceholder("Password"); password.setInputStyle(ClEAR_STYLE)}}
+                                    style={password.inputStyle}/>
+                                <input
+                                    type="text"
+                                    placeholder={t(name.placeholder)}
+                                    value={name.value}
+                                    onChange={(e) => name.setValue(e.target.value)}
+                                    onFocus={() => {name.setPlaceholder("your name"); name.setInputStyle(ClEAR_STYLE)}}
+                                    style={name.inputStyle}/>
+                                <input
+                                    type="tel"
+                                    placeholder={t(tel.placeholder)}
+                                    value={tel.value}
+                                    onChange={(e) => tel.setValue(e.target.value)}
+                                    onFocus={() => {tel.setInputStyle(ClEAR_STYLE); tel.setPlaceholder("Phone number (optional)")}}
+                                    style={tel.inputStyle}/>
+                            </form>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button
+                                className="continue-btn"
+                                onClick={register}
+                                style={submitButton.style}>
+                                {t(submitButton.label)}
+                            </Button>
+                        </Modal.Footer>
+                    </div>}
             </Modal>
             {showLoader && <Loader />}
         </>

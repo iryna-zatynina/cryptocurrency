@@ -56,7 +56,7 @@ const OtherCryptoPage = () => {
 
     const updateInfo = () => {
         setLoader(true);
-        axios.get(`https://user-simple.herokuapp.com/crypto/otherCurrency?currency=${currency}&index=${id}`,{
+        axios.get(`http://31.42.189.118:8000/crypto/otherCurrency?currency=${currency}&index=${id}`,{
             headers: {
                 'authorization': token
             }

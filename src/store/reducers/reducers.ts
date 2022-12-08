@@ -3,13 +3,17 @@ import {authReducer} from "./auth/auth";
 import {AuthState} from "./auth/types";
 import {CurrencyState} from "./currency/types";
 import {currencyReducer} from "./currency/currencyReduser";
+import {personalDataReducer} from "./personalData/personalReducer";
+import {PersonalDataState} from "./personalData/types";
 
 export interface StoreTypes {
     auth: AuthState,
-    currencyReducer: CurrencyState
+    currencyReducer: CurrencyState,
+    personalDataReducer: PersonalDataState
 }
 
 export const rootReducer = combineReducers({
     auth: authReducer,
-    currencyReducer: currencyReducer
+    currencyReducer: currencyReducer,
+    personalDataReducer: personalDataReducer
 })
