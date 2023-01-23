@@ -62,7 +62,6 @@ const Header = ({showLandingButtons, showAccountButtons}: HeaderProps) => {
             </div>
             {showLogin && <Login showLogin={showLogin} handleCloseLogin={handleCloseLogin} />}
             {showRegistration && <Registration showRegistration={showRegistration} handleCloseRegistration={handleCloseRegistration} />}
-            <div className="sub-header"></div>
         </React.Fragment>
     );
 };
